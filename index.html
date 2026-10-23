@@ -35,6 +35,7 @@ h1,h2,h3{margin:0;line-height:1.05}
 .hero ul{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:6px;font-weight:700}
 .hero li:before{content:"✔";color:var(--lime);margin-right:8px}
 .vid{border:5px solid var(--yl);border-radius:26px;overflow:hidden;background:#000;aspect-ratio:9/16;width:100%;max-width:315px;margin:0 auto}
+.vid{position:relative}#vplay{position:absolute;inset:0;width:100%;height:100%;border:0;background:rgba(0,0,0,.18);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}#vplay span{width:84px;height:84px;border-radius:50%;background:#f97316;box-shadow:0 6px 24px rgba(0,0,0,.45);position:relative}#vplay span:after{content:'';position:absolute;left:34px;top:24px;border-left:28px solid #fff;border-top:18px solid transparent;border-bottom:18px solid transparent}
 .vid video,.vid img{width:100%;height:100%;object-fit:cover}
 .hero .btn{margin:0}
 .strip{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
@@ -131,7 +132,7 @@ src="https://www.facebook.com/tr?id=1888254082534642&ev=PageView&noscript=1"
 <h1 style="margin-top:10px">Dinos de <em>Prendedor</em></h1>
 <p>12 dinossauros para imprimir, recortar e prender no prendedor de roupa. Brincadeira de verdade, longe das telas, em menos de 5 minutos.</p>
 </div>
-<div class="vid"><video id="lpv" data-src="img/video.mp4" poster="img/poster.webp" width="540" height="960" muted loop playsinline controls preload="none"></video></div>
+<div class="vid" id="vbox"><video id="lpv" data-src="img/video.mp4" poster="img/poster.webp" width="540" height="960" playsinline preload="none"></video><button type="button" id="vplay" aria-label="Assistir com som"><span></span></button></div>
 <div class="rest">
 <ul>
 <li>Treina a pinça e a coordenação motora</li>
@@ -260,7 +261,9 @@ document.querySelectorAll('[data-cta]').forEach(function(a){a.href=CHECKOUT;a.ad
  e.preventDefault();try{if(window.fbq)fbq('track','InitiateCheckout',{value:10,currency:'BRL'});}catch(x){}
  setTimeout(function(){location.href=go(a);},300);});});
 /* video: so carrega depois da pagina (nao disputa banda com o conteudo) */
-window.addEventListener('load',function(){setTimeout(function(){var v=document.getElementById('lpv');if(!v)return;v.src=v.dataset.src;v.load();var p=v.play();if(p&&p.catch)p.catch(function(){});},600);});
+(function(){var v=document.getElementById('lpv'),b=document.getElementById('vplay');if(!v||!b)return;
+function start(){v.src=v.dataset.src;v.muted=false;v.volume=1;v.controls=true;b.style.display='none';var p=v.play();if(p&&p.catch)p.catch(function(){v.controls=true;});}
+b.addEventListener('click',start);v.addEventListener('click',function(){if(!v.src||v.src===location.href)start();});})();
 </script>
 </body>
 </html>
